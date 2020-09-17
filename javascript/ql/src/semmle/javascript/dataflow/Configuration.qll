@@ -1102,7 +1102,8 @@ private predicate reachesReturn(
 ) {
   isRelevant(nd, cfg) and
   returnExpr(f, nd, _) and
-  summary = PathSummary::level()
+  summary = PathSummary::level() and
+  parameterPropRead(f, _, _, _, _, cfg) // basic check to see if it is possible to reach somewhere relevant.
   or
   exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     flowStep(nd, cfg, mid, oldSummary) and
