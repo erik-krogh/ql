@@ -1213,7 +1213,8 @@ private predicate loadStep(
   PathSummary summary
 ) {
   basicRelevantLoadStep(pred, succ, prop, cfg) and
-  summary = PathSummary::level()
+  summary = PathSummary::level() and
+  prop = getARelevantLoadAndStoreProperty(cfg)
   or
   exists(Function f, DataFlow::Node read, DataFlow::Node invk |
     not f.isAsyncOrGenerator() and invk = succ
