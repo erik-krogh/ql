@@ -1067,6 +1067,7 @@ private predicate flowThroughCall(
  * 
  * Is outlined to give the compiler a hint about join-order.
  */
+pragma[nomagic]
 private predicate basicRelevantStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
