@@ -1062,6 +1062,22 @@ private predicate flowThroughCall(
 }
 
 /**
+ * Holds there exists a basic store-step, that was found to be relevant during the exploratory flow,
+ * such that `pred` may flow into property `prop` of `succ` under configuration `cfg`.
+ * 
+ * Is outlined to give the compiler a hint about join-order.
+ */
+private predicate basicRelevantStoreStep(
+  DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
+) {
+  isRelevant(pred, cfg) and
+  basicStoreStep(pred, succ, prop)
+  or
+  isRelevant(pred, cfg) and
+  isAdditionalStoreStep(pred, succ, prop, cfg)
+}
+
+/**
  * Holds if `pred` may flow into property `prop` of `succ` under configuration `cfg`
  * along a path summarized by `summary`.
  */
@@ -1070,12 +1086,7 @@ private predicate storeStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  isRelevant(pred, cfg) and
-  basicStoreStep(pred, succ, prop) and
-  summary = PathSummary::level()
-  or
-  isRelevant(pred, cfg) and
-  isAdditionalStoreStep(pred, succ, prop, cfg) and
+  basicRelevantStoreStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node mid, DataFlow::Node invk |
