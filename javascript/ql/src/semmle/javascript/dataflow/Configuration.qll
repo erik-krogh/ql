@@ -1087,6 +1087,7 @@ private predicate storeStep(
   PathSummary summary
 ) {
   basicRelevantStoreStep(pred, succ, prop, cfg) and
+  prop = getARelevantLoadAndStoreProperty(cfg) and
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node mid, DataFlow::Node invk |
