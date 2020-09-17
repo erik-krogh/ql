@@ -1100,6 +1100,7 @@ private predicate storeStep(
   |
     // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
     // and `succ` is an invocation of `f`
+    prop = getARelevantLoadAndStoreProperty(cfg) and
     reachableFromInput(f, invk, pred, mid, cfg, summary) and
     (
       returnedPropWrite(f, _, prop, mid)
